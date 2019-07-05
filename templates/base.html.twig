@@ -34,23 +34,6 @@
           {#<div class="dropdown-divider"></div>#}
           {#<a class="dropdown-item" href="../cerulean/">Cerulean</a>#}
           {#<a class="dropdown-item" href="../cosmo/">Cosmo</a>#}
-          {#<a class="dropdown-item" href="../cyborg/">Cyborg</a>#}
-          {#<a class="dropdown-item" href="../darkly/">Darkly</a>#}
-          {#<a class="dropdown-item" href="../flatly/">Flatly</a>#}
-          {#<a class="dropdown-item" href="../journal/">Journal</a>#}
-          {#<a class="dropdown-item" href="../litera/">Litera</a>#}
-          {#<a class="dropdown-item" href="../lumen/">Lumen</a>#}
-          {#<a class="dropdown-item" href="../lux/">Lux</a>#}
-          {#<a class="dropdown-item" href="../materia/">Materia</a>#}
-          {#<a class="dropdown-item" href="../minty/">Minty</a>#}
-          {#<a class="dropdown-item" href="../pulse/">Pulse</a>#}
-          {#<a class="dropdown-item" href="../sandstone/">Sandstone</a>#}
-          {#<a class="dropdown-item" href="../simplex/">Simplex</a>#}
-          {#<a class="dropdown-item" href="../sketchy/">Sketchy</a>#}
-          {#<a class="dropdown-item" href="../slate/">Slate</a>#}
-          {#<a class="dropdown-item" href="../solar/">Solar</a>#}
-          {#<a class="dropdown-item" href="../spacelab/">Spacelab</a>#}
-          {#<a class="dropdown-item" href="../superhero/">Superhero</a>#}
           {#<a class="dropdown-item" href="../united/">United</a>#}
           {#<a class="dropdown-item" href="../yeti/">Yeti</a>#}
           {#</div>#}
@@ -64,12 +47,19 @@
         </ul>
 
         <ul class="nav navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="{{ path('index') }}">Register</a>
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+          <span class="navbar-text">Hi, {{ app.user.displayname }}!</span>
+          <li class="nav-item ml-2">
+            <a class="btn btn-secondary text-white btn-sm nav-link" href="{{ path('logout') }}">Log out</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ path('index') }}">Log in</a>
+        {% else %}
+          <li class="nav-item {% if app.request.get('_route') == 'register' %} active{% endif %}">
+            <a class="nav-link" href="{{ path('register') }}">Register</a>
           </li>
+          <li class="nav-item {% if app.request.get('_route') == 'login' %} active{% endif %}">
+            <a class="nav-link" href="{{ path('login') }}">Log in</a>
+          </li>
+        {% endif %}
         </ul>
 
       </div>
@@ -77,6 +67,16 @@
   </div>
 
 <div class="container">
+
+  {% for label, messages in app.flashes %}
+    {% for message in messages %}
+      <div class="alert alert-{{ label }} alert-dismissible fade show">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endfor %}
+
   {% block body %}
 
   {% endblock %}

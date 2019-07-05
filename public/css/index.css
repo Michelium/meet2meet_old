@@ -2,3 +2,8 @@ body {
     background-color: #cdd6d1;
     padding-top: 100px;
 }
+
+label.required:before {
+    content: " * ";
+    color: #FF7851;
+}

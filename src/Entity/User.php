@@ -39,24 +39,24 @@ class User implements UserInterface {
   private $lastname;
 
   /**
-   * @ORM\Column(type="date")
+   * @ORM\Column(type="date", nullable=true)
    */
   private $birthdate;
 
   /**
-   * @ORM\Column(type="string", length=7)
+   * @ORM\Column(type="string", length=7, nullable=true)
    */
   private $gender;
 
   /**
-   * @ORM\Column(type="string", length=25)
+   * @ORM\Column(type="string", length=25, nullable=true)
    */
-  private $homeCity;
+  private $homeCountry;
 
   /**
-   * @ORM\Column(type="string", length=25)
+   * @ORM\Column(type="string", length=25, nullable=true)
    */
-  private $currentCity;
+  private $currentCountry;
 
   /**
    * @ORM\Column(type="json")
@@ -195,33 +195,30 @@ class User implements UserInterface {
   /**
    * @return mixed
    */
-  public function getHomeCity() {
-    return $this->homeCity;
+  public function getHomeCountry() {
+    return $this->homeCountry;
   }
 
   /**
-   * @param mixed $homeCity
+   * @param mixed $homeCountry
    */
-  public function setHomeCity($homeCity): void {
-    $this->homeCity = $homeCity;
+  public function setHomeCountry($homeCountry): void {
+    $this->homeCountry = $homeCountry;
   }
 
   /**
    * @return mixed
    */
-  public function getCurrentCity() {
-    return $this->currentCity;
+  public function getCurrentCountry() {
+    return $this->currentCountry;
   }
 
   /**
-   * @param mixed $currentCity
+   * @param mixed $currentCountry
    */
-  public function setCurrentCity($currentCity): void {
-    $this->currentCity = $currentCity;
+  public function setCurrentCountry($currentCountry): void {
+    $this->currentCountry = $currentCountry;
   }
-
-
-
 
 
   /**
