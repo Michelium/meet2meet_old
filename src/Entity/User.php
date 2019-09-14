@@ -49,16 +49,6 @@ class User implements UserInterface {
   private $gender;
 
   /**
-   * @ORM\Column(type="string", length=25, nullable=true)
-   */
-  private $homeCountry;
-
-  /**
-   * @ORM\Column(type="string", length=25, nullable=true)
-   */
-  private $currentCountry;
-
-  /**
    * @ORM\Column(type="json")
    */
   private $roles = [];
@@ -68,6 +58,61 @@ class User implements UserInterface {
    * @ORM\Column(type="string")
    */
   private $password;
+
+  /**
+   * @ORM\ManyToOne(targetEntity="App\Entity\Country", inversedBy="home_users")
+   */
+  private $home_country;
+
+  /**
+   * @ORM\ManyToOne(targetEntity="App\Entity\Country", inversedBy="current_users")
+   */
+  private $current_country;
+
+  /**
+   * @ORM\Column(type="string", length=255, nullable=true)
+   */
+  private $avatar;
+
+  /**
+   * @ORM\Column(type="string", length=255, nullable=true)
+   */
+  private $education;
+
+  /**
+   * @ORM\Column(type="string", length=255, nullable=true)
+   */
+  private $status;
+
+  /**
+   * @ORM\Column(type="text", nullable=true)
+   */
+  private $about;
+
+  /**
+   * @ORM\Column(type="text", nullable=true)
+   */
+  private $hobbies;
+
+  /**
+   * @ORM\Column(type="text", nullable=true)
+   */
+  private $music;
+
+  /**
+   * @ORM\Column(type="text", nullable=true)
+   */
+  private $movies;
+
+  /**
+   * @ORM\Column(type="text", nullable=true)
+   */
+  private $tv_shows;
+
+  /**
+   * @ORM\Column(type="text", nullable=true)
+   */
+  private $books;
 
   public function getId(): ?int {
     return $this->id;
@@ -193,35 +238,6 @@ class User implements UserInterface {
   }
 
   /**
-   * @return mixed
-   */
-  public function getHomeCountry() {
-    return $this->homeCountry;
-  }
-
-  /**
-   * @param mixed $homeCountry
-   */
-  public function setHomeCountry($homeCountry): void {
-    $this->homeCountry = $homeCountry;
-  }
-
-  /**
-   * @return mixed
-   */
-  public function getCurrentCountry() {
-    return $this->currentCountry;
-  }
-
-  /**
-   * @param mixed $currentCountry
-   */
-  public function setCurrentCountry($currentCountry): void {
-    $this->currentCountry = $currentCountry;
-  }
-
-
-  /**
    * @see UserInterface
    */
   public function getSalt() {
@@ -234,5 +250,137 @@ class User implements UserInterface {
   public function eraseCredentials() {
     // If you store any temporary, sensitive data on the user, clear it here
     // $this->plainPassword = null;
+  }
+
+  public function getHomeCountry(): ?Country
+  {
+      return $this->home_country;
+  }
+
+  public function setHomeCountry(?Country $home_country): self
+  {
+      $this->home_country = $home_country;
+
+      return $this;
+  }
+
+  public function getCurrentCountry(): ?Country
+  {
+      return $this->current_country;
+  }
+
+  public function setCurrentCountry(?Country $current_country): self
+  {
+      $this->current_country = $current_country;
+
+      return $this;
+  }
+
+  public function getAvatar(): ?string
+  {
+      return $this->avatar;
+  }
+
+  public function setAvatar(string $avatar): self
+  {
+      $this->avatar = $avatar;
+
+      return $this;
+  }
+
+  public function getEducation(): ?string
+  {
+      return $this->education;
+  }
+
+  public function setEducation(?string $education): self
+  {
+      $this->education = $education;
+
+      return $this;
+  }
+
+  public function getStatus(): ?string
+  {
+      return $this->status;
+  }
+
+  public function setStatus(?string $status): self
+  {
+      $this->status = $status;
+
+      return $this;
+  }
+
+  public function getAbout(): ?string
+  {
+      return $this->about;
+  }
+
+  public function setAbout(?string $about): self
+  {
+      $this->about = $about;
+
+      return $this;
+  }
+
+  public function getHobbies(): ?string
+  {
+      return $this->hobbies;
+  }
+
+  public function setHobbies(?string $hobbies): self
+  {
+      $this->hobbies = $hobbies;
+
+      return $this;
+  }
+
+  public function getMusic(): ?string
+  {
+      return $this->music;
+  }
+
+  public function setMusic(?string $music): self
+  {
+      $this->music = $music;
+
+      return $this;
+  }
+
+  public function getMovies(): ?string
+  {
+      return $this->movies;
+  }
+
+  public function setMovies(?string $movies): self
+  {
+      $this->movies = $movies;
+
+      return $this;
+  }
+
+  public function getTvShows(): ?string
+  {
+      return $this->tv_shows;
+  }
+
+  public function setTvShows(?string $tv_shows): self
+  {
+      $this->tv_shows = $tv_shows;
+
+      return $this;
+  }
+
+  public function getBooks(): ?string
+  {
+      return $this->books;
+  }
+
+  public function setBooks(?string $books): self
+  {
+      $this->books = $books;
+
+      return $this;
   }
 }

@@ -90,14 +90,6 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('homeCountry', CountryType::class, [
-                'label' => 'Home country (This is the country you were born in)',
-                'required' => false,
-            ])
-            ->add('currentCountry', CountryType::class, [
-                'label' => 'Current country (This is the country you currently live in)',
-                'required' => false,
-            ])
         ;
     }
 
