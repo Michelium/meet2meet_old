@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\LanguageUser;
 use App\Entity\User;
 use App\Form\ProfileType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,13 +28,16 @@ class ProfileController extends AbstractController {
       }
     }
 
+    //gets languages of user
+    $languages = $em->getRepository(LanguageUser::class)->findBy(['user' => $this->getUser()]);
+
     //calculate age of user
     $age = date_diff(date_create($user->getBirthdate()->format('Y-m-d H:i:s')), date_create('now'))->y;
 
     return $this->render('profile/index.html.twig', [
         'user' => $user,
         'age' => $age,
-        'controller_name' => 'ProfileController',
+        'languages' => $languages,
     ]);
   }
 
@@ -55,13 +59,10 @@ class ProfileController extends AbstractController {
 
     if ($form->isSubmitted() && $form->isValid()) {
 
+      //avatar uploading
       $avatarFile = $form['avatarFile']->getData();
       if ($avatarFile) {
-        //$originalFilename = pathinfo($avatarFile->getClientOriginalName(), PATHINFO_FILENAME);
-        //$safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
-        //$newFilename = $safeFilename.'-'.uniqid().'.'.$avatarFile->guessExtension();
         $filename = md5(uniqid()) . '.' . $avatarFile->guessExtension();
-
         try {
           $avatarFile->move(
               $this->getParameter('avatars_directory'),
@@ -70,8 +71,21 @@ class ProfileController extends AbstractController {
         } catch (FileException $e) {
           throw new \Exception('Something went wrong!');
         }
-
         $user->setAvatar($filename);
+      }
+
+      //language add
+      $languages = $form['languages']->getData();
+      if ($languages) {
+        foreach ($languages as $language) {
+          $temp = new LanguageUser();
+          $temp->setLanguage($language);
+          $temp->setUser($this->getUser());
+          $temp->setLevel(1);
+          $em->persist($temp);
+          $em->flush();
+          $temp = null;
+        }
       }
 
       $em->persist($user);

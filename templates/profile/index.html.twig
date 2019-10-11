@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ProfileController!{% endblock %}
+{% block title %}Profile {{ user.displayname }}{% endblock %}
 
 {% block body %}
   <div class="row">
@@ -20,6 +20,14 @@
                         class="small">{{ age }} y/o</span></p>
             </div>
           </div>
+          <div class="row">
+            <div class="col-12">
+                <h6 class="text-info font-weight-bolder">Current status</h6>
+                <p>{{ user.status }}</p>
+            </div>
+          </div>
+          <hr class="w-50 float-left">
+          <br><br>
           <div class="row">
             <div class="col-12">
               <p>
@@ -52,6 +60,13 @@
             <div class="col-12">
               <p>
                 <span class="small">Languages:</span><br>
+                {% if languages is not null %}
+                  <ul>
+                    {% for language in languages %}
+                      <li>{{ language.language.name }}</li>
+                    {% endfor %}
+                  </ul>
+                {% endif %}
               </p>
             </div>
           </div>
@@ -65,9 +80,16 @@
           </div>
         </div>
         <div class="col-sm-12 col-lg-6">
-          {% if user.avatar %}
-          <img class="float-right img-thumbnail mr-lg-2 mt-lg-2" width="150px" height="150px" src="{{ asset('uploads/avatars/' ~ user.avatar ~ '') }}" alt="Profile picture">
-          {% endif %}
+          <div class="row float-right mr-lg-2 mt-lg-2">
+            {% if user.avatar %}
+              <img class="img-thumbnail" width="150px" height="150px" src="{{ asset('uploads/avatars/' ~ user.avatar ~ '') }}" alt="Profile picture">
+            {% endif %}
+          </div>
+          <div class="row">
+            <map name="">
+
+            </map>
+          </div>
         </div>
       </div>
 

@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Country;
+use App\Entity\Language;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -21,7 +22,7 @@ class ProfileType extends AbstractType {
         ->add('birthdate', DateType::class, [
             'label' => false,
             'format' => 'dd MM yyyy',
-            'years' => range(date('Y')-50, date('Y')-10),
+            'years' => range(date('Y')-80, date('Y')-10),
             'required' => false,
         ])
         ->add('gender', ChoiceType::class, [
@@ -93,7 +94,17 @@ class ProfileType extends AbstractType {
             'required' => false,
             'class' => Country::class,
             'choice_label' => 'name',
-        ]);
+        ])
+        ->add('languages', EntityType::class, [
+            'label' => 'Languages you speak',
+            'mapped' => false,
+            'required' => false,
+            'class' => Language::class,
+            'choice_label' => 'name',
+            'multiple' => true,
+        ])
+
+    ;
   }
 
   public function configureOptions(OptionsResolver $resolver) {

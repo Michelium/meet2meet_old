@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -113,6 +115,16 @@ class User implements UserInterface {
    * @ORM\Column(type="text", nullable=true)
    */
   private $books;
+
+  /**
+   * @ORM\OneToMany(targetEntity="App\Entity\LanguageUser", mappedBy="user", orphanRemoval=true)
+   */
+  private $languages;
+
+  public function __construct()
+  {
+      $this->languages = new ArrayCollection();
+  }
 
   public function getId(): ?int {
     return $this->id;
@@ -380,6 +392,37 @@ class User implements UserInterface {
   public function setBooks(?string $books): self
   {
       $this->books = $books;
+
+      return $this;
+  }
+
+  /**
+   * @return Collection|LanguageUser[]
+   */
+  public function getLanguages(): Collection
+  {
+      return $this->languages;
+  }
+
+  public function addLanguage(LanguageUser $language): self
+  {
+      if (!$this->languages->contains($language)) {
+          $this->languages[] = $language;
+          $language->setUser($this);
+      }
+
+      return $this;
+  }
+
+  public function removeLanguage(LanguageUser $language): self
+  {
+      if ($this->languages->contains($language)) {
+          $this->languages->removeElement($language);
+          // set the owning side to null (unless already changed)
+          if ($language->getUser() === $this) {
+              $language->setUser(null);
+          }
+      }
 
       return $this;
   }
